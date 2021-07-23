@@ -8,15 +8,13 @@ from newspaper import Article
 # import nltk 
 # nltk.download('punkt')
 
-CRAWL_URL = "https://www.bajajfinserv.in/"
-CRAWL_URL_MATCH = get_tld(CRAWL_URL, as_object=True)
-
 class MyCrawler:
     def __init__(self, start_page):
         self.visited_url = {}
         self.queue_url = [start_page]
         self.summary = {}
         self.keywords = {}
+        self.CRAWL_URL_MATCH = get_tld(CRAWL_URL, as_object=True)
 
 
     def get_url_list(self, url):
@@ -81,7 +79,7 @@ class MyCrawler:
             this_url = self.queue_url[0]
             
             try:
-                if get_tld(this_url, as_object=True).fld != CRAWL_URL_MATCH.fld:
+                if get_tld(this_url, as_object=True).fld != self.CRAWL_URL_MATCH.fld:
                     self.queue_url = self.queue_url[1:]
                 else:
                     self.get_url_list(this_url)
