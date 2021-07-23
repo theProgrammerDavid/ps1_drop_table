@@ -5,8 +5,16 @@ from urllib.parse import urljoin
 from tld import get_tld
 from newspaper import Article
 
-# import nltk 
-# nltk.download('punkt')
+import meilisearch
+import json
+
+
+import nltk 
+nltk.download('punkt')
+
+CRAWL_URL = "https://www.bajajfinservmarkets.in"
+client = meilisearch.Client('http://139.59.36.68:7700/')
+
 
 class MyCrawler:
     def __init__(self, start_page):
@@ -63,16 +71,35 @@ class MyCrawler:
         summary = list(self.summary.values())
         keywords = list(self.keywords.values())
 
-        print(summary)
-        print(keywords)
+        # print(summary)
+
+        for i in range(len(keywords)):
+            keywords[i] = ' '.join(keywords[i])
+
+        # print(keywords)
+        # print(' '.join(keywords))
         
+        result['id'] = list(range(0, len(urls)))
         result['TITLE'] = titles
         result['URL'] = urls
         result['SUMMARY'] = summary
-        result['KEYWORDS'] = keywords
+        result['KEYWORDS'] = ' '.join(keywords)
         print('saving')
-        result.to_csv('result.csv', encoding='utf-8-sig')
+        print(result)
+        # result.to_csv('result.csv', encoding='utf-8-sig')
+        result.to_json('result.json', orient="records")
         print('saved')
+
+        # with open('result.json', 'rb') as f:
+        #     data = f.read()
+        # res = requests.post(
+        #     url = 'http://localhost:7700/indexes/hackrx/documents',
+        #     data=data,
+        #     headers={'Content-Type': 'application/octet-stream'}
+        # )
+        json_file = open('result.json')
+        movies = json.load(json_file)
+        # client.index('hackrx').add_documents(movies)
         
     def start_crawling(self, threshold=-1):
         while threshold != 0:
@@ -99,5 +126,5 @@ class MyCrawler:
         
         
         
-# myCrawler = DeepCrawler(CRAWL_URL)
-# myCrawler.start_crawling(threshold=10)
+myCrawler = MyCrawler(CRAWL_URL)
+myCrawler.start_crawling(threshold=5)
