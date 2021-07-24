@@ -22,6 +22,7 @@ class MyCrawler:
         self.queue_url = [start_page]
         self.summary = {}
         self.keywords = {}
+        self.category = {}
         self.CRAWL_URL_MATCH = get_tld(CRAWL_URL, as_object=True)
 
 
@@ -42,7 +43,8 @@ class MyCrawler:
             response = requests.get(url, timeout=10.0)
             raw_html = response.text
             parsed_html = html.fromstring(raw_html)
-        except:
+        except Exception as e:
+            print(e)
             return
         
         url_title_item = parsed_html.xpath('//title')
@@ -54,6 +56,10 @@ class MyCrawler:
         self.visited_url[url] = url_title
         self.summary[url] = article.summary
         self.keywords[url] = article.keywords
+        if len(article.keywords) > 20:
+            self.category[url] = article.keywords[:20]
+        else:
+            self.category[url] = article.keywords
     
         for a in parsed_html.xpath('//a'):
             raw_url = a.get('href')
@@ -70,6 +76,7 @@ class MyCrawler:
         titles = list(self.visited_url.values())
         summary = list(self.summary.values())
         keywords = list(self.keywords.values())
+        categories = list(self.category.values())
 
         # print(summary)
 
@@ -84,23 +91,19 @@ class MyCrawler:
         result['URL'] = urls
         result['SUMMARY'] = summary
         result['KEYWORDS'] = ' '.join(keywords)
+        result['CATEGORY'] = categories
         print('saving')
         print(result)
         # result.to_csv('result.csv', encoding='utf-8-sig')
         result.to_json('result.json', orient="records")
         print('saved')
 
-        # with open('result.json', 'rb') as f:
-        #     data = f.read()
-        # res = requests.post(
-        #     url = 'http://localhost:7700/indexes/hackrx/documents',
-        #     data=data,
-        #     headers={'Content-Type': 'application/octet-stream'}
-        # )
+        
+    def update_engine(self):
         json_file = open('result.json')
         movies = json.load(json_file)
-        # client.index('hackrx').add_documents(movies)
-        
+        client.index('hackrx').add_documents(movies)
+
     def start_crawling(self, threshold=-1):
         while threshold != 0:
             this_url = self.queue_url[0]
@@ -110,7 +113,8 @@ class MyCrawler:
                     self.queue_url = self.queue_url[1:]
                 else:
                     self.get_url_list(this_url)
-            except:
+            except Exception as e:
+                print(e)
                 print('error') 
                 self.queue_url = self.queue_url[1:]
             

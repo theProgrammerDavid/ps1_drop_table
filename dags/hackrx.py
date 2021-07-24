@@ -7,13 +7,13 @@ from webscraper import MyCrawler
 
 CRAWL_URL = "https://www.bajajfinserv.in/"
 
+crawler = MyCrawler(CRAWL_URL)
 def startCrawler():
-    crawler = MyCrawler(CRAWL_URL)
     crawler.start_crawling(threshold=10)
     
 def processData():
-    df = pd.read(r'result.csv')
-    df.to_json(r'result.json')
+    crawler.output_result()
+
 
 
 dag_args = {
@@ -46,10 +46,10 @@ with dag:
         op_args=[],
         dag=dag
     )
-    search_engine_cache = BashOperator(
+    search_engine_cache = PythonOperator(
         task_id='search_engine_cache',
-        bash_command="curl -i -X POST 'http://127.0.0.1:7700/indexes/hackrx/documents' \
-  --header 'content-type: application/json' \
-  --data-binary @result.json"
+        python_callable=crawler.update_engine,
+        op_args=[],
+        dag=dag
     )
     start_crawler >> process_data >> search_engine_cache
