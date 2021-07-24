@@ -1,0 +1,12 @@
+pandas
+nltk==3.6.2
+requests==2.22.0
+lxml==4.6.3
+urllib3==1.25.8
+tld==0.12.6
+tldextract==3.1.0
+newspaper3k==0.2.8
+meilisearch==0.15.1
+simplejson==3.16.0
+html5lib
+beautifulsoup4
