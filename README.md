@@ -7,7 +7,7 @@ The project consists of 4 parts
 - Backend
 - Apache Airflow
 - Search Engine
-- Web Crawler
+- [Web Crawler](./dags/README.md)
 
 
 To get started, clone the repo and cd into it 
@@ -34,8 +34,11 @@ docker-compose up
 ### Apache Airflow
 The `docker-compose.yml` file will setup `Apache Airflow` along with required dependencies.
 
-Put any `Python` setup code you have into `envsetup.py`. This will run during the build stage
+Put any `Python` setup code you have into `airflow/envsetup.py`. This will run during the build stage
 
 ## Support
 
 - [Ubuntu docker-compose invalid file](https://github.com/apache/airflow/discussions/14362)
+- [MeiliSearch Typo Tolerance](https://docs.meilisearch.com/reference/under_the_hood/typotolerance.html#typo-tolerance-rules)
+- [Facet Search / Categorization](https://docs.meilisearch.com/reference/features/faceted_search.html#setting-up-facets)
+- [Ranking Rules](https://docs.meilisearch.com/reference/features/settings.html#ranking-rules)
