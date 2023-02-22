@@ -1,13 +1,22 @@
 # Website Search
 
-Website Indexing and Search Engine.
+This project was developed for the Bajaj HackRx2.0 hackathon according to a problem statement. Its features are - 
+
+- Typo resistant search engine
+- Real time searches
+- Breadth First Search web crawler
+- Scheduling with Apache Airflow
+- Container first approach
+
 ## Installation
 
 The project consists of 4 parts
-- Backend
 - Apache Airflow
 - Search Engine
-- [Web Crawler](./dags/README.md)
+- [Web Crawlers](./dags/README.md)
+- Backend (incomplete, exists to serve the static HTML file in the `website` folder)
+
+The project can be started with `docker-compose`.
 
 
 To get started, clone the repo and cd into it 
@@ -31,10 +40,31 @@ And finally
 docker-compose up
 ```
 
-### Apache Airflow
+### Skipping Apache Airflow
+
+Apache Airflow is used for scheduling the web-crawlers through the DAGs provided. However, you can skip its setup and follow the steps mentioned here.
+
+#### Step 1: 
+Start an instance of Meilisearch using docker or through other ways as given in the [documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html)
+
+```bash
+docker run -it --rm \
+  -p 7700:7700 \
+  -v $(pwd)/meili_data:/meili_data \
+  getmeili/meilisearch:v1.0
+
+```
+
+#### Step 2: 
+
+Using your webcrawler of choice, replace the `SCRAPE_URL`, the client host URL and the client index. Once this is done, use `python3` to run the scraper
+
+### Using Apache Airflow
 The `docker-compose.yml` file will setup `Apache Airflow` along with required dependencies.
 
 Put any `Python` setup code you have into `airflow/envsetup.py`. This will run during the build stage
+
+Using your webcrawler of choice, replace the `SCRAPE_URL`, the client host URL and the client index. Once this is done, use `python3` to run the scraper
 
 ## Support
 
