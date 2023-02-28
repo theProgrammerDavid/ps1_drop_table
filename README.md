@@ -35,10 +35,16 @@ Run the initial setup. This will create the required databases
 docker-compose up airflow-init
 ```
 
-And finally 
+Then lets start the services
 ```bash
 docker-compose up
 ```
+
+And finally, install dependencies
+```bash
+pip install meilisearch
+```
+
 
 ### Skipping Apache Airflow
 
