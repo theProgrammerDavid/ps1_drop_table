@@ -8,6 +8,10 @@ This project was developed for the Bajaj HackRx2.0 hackathon according to a prob
 - Scheduling with Apache Airflow
 - Container first approach
 
+## Demonstration
+
+[![Demonstration video](https://img.youtube.com/vi/BCukys9cff4/0.jpg)](https://www.youtube.com/watch?v=BCukys9cff4)
+
 ## Installation
 
 The project consists of 4 parts
@@ -42,9 +46,9 @@ docker-compose up
 
 And finally, install dependencies
 ```bash
-pip install meilisearch
+pip install meilisearch newspaper3k tld
 ```
-
+> Refer to the [newspaper3k documentation](https://github.com/codelucas/newspaper) if you face errors
 
 ### Skipping Apache Airflow
 
@@ -64,6 +68,14 @@ docker run -it --rm \
 #### Step 2: 
 
 Using your webcrawler of choice, replace the `SCRAPE_URL`, the client host URL and the client index. Once this is done, use `python3` to run the scraper
+
+#### Step 3:
+
+Install dependencies
+```bash
+pip install meilisearch newspaper3k tld
+```
+> Refer to the [newspaper3k documentation](https://github.com/codelucas/newspaper) if you face errors
 
 ### Using Apache Airflow
 The `docker-compose.yml` file will setup `Apache Airflow` along with required dependencies.

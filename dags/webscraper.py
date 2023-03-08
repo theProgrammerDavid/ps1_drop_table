@@ -12,8 +12,9 @@ import json
 import nltk 
 nltk.download('punkt')
 
-CRAWL_URL = "https://www.bajajfinservmarkets.in"
-client = meilisearch.Client('http://139.59.36.68:7700/')
+CRAWL_URL = "https://servercart.in/"
+INDEX_NAME = "servercart"
+client = meilisearch.Client('http://localhost:7700/')
 
 
 class MyCrawler:
@@ -102,7 +103,7 @@ class MyCrawler:
     def update_engine(self):
         json_file = open('result.json')
         movies = json.load(json_file)
-        client.index('hackrx').add_documents(movies)
+        client.index(INDEX_NAME).add_documents(movies)
 
     def start_crawling(self, threshold=-1):
         while threshold != 0:
@@ -131,4 +132,5 @@ class MyCrawler:
         
         
 myCrawler = MyCrawler(CRAWL_URL)
-myCrawler.start_crawling(threshold=5)
+myCrawler.start_crawling(threshold=55)
+myCrawler.update_engine()
